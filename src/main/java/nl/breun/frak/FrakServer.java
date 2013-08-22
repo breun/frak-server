@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.regex.Pattern;
 
+import org.simpleframework.http.Method;
 import org.simpleframework.http.Request;
 import org.simpleframework.http.Response;
 import org.simpleframework.http.core.Container;
@@ -31,7 +32,7 @@ public class FrakServer implements Container {
 
     @Override
     public void handle(Request request, Response response) {
-        if (!"POST".equals(request.getMethod())) {
+        if (!Method.POST.equals(request.getMethod())) {
             throw new UnsupportedOperationException("Only HTTP POST is supported.");
         }
 
