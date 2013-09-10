@@ -15,11 +15,14 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class FrakServer implements Container {
 
+    private final static Logger LOGGER = Logger.getLogger(FrakServer.class.getName());
     private final static String FRAK_NS = "frak";
+    private final static int DEFAULT_PORT = 8080;
 
     public FrakServer() {
         initializeFrak();
@@ -36,15 +39,27 @@ public class FrakServer implements Container {
         }
 
         try {
-            setHeaders(response);
+            final String input = request.getContent();
+            final String output = getPattern(input.split(" ")).pattern();
 
-            final String[] inputStrings = getInputStrings(request);
-            final Pattern pattern = getPattern(inputStrings);
+            write(response, output);
 
-            write(response, pattern.pattern());
+            LOGGER.info("Input: '" + input + "', output: '" + output + "'");
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private Pattern getPattern(String[] input) {
+        return (Pattern) RT.var(FRAK_NS, "pattern").invoke(input);
+    }
+
+    private void write(Response response, String regex) throws IOException {
+        setHeaders(response);
+
+        PrintStream responsePrintStream = response.getPrintStream();
+        responsePrintStream.println(regex);
+        responsePrintStream.close();
     }
 
     private void setHeaders(Response response) {
@@ -56,21 +71,6 @@ public class FrakServer implements Container {
         response.setDate("Last-Modified", time);
     }
 
-    private String[] getInputStrings(Request request) throws IOException {
-        final String requestBody = request.getContent();
-        return requestBody.split(" ");
-    }
-
-    private Pattern getPattern(String[] inputStrings) {
-        return (Pattern) RT.var(FRAK_NS, "pattern").invoke(inputStrings);
-    }
-
-    private void write(Response response, String regex) throws IOException {
-        PrintStream responsePrintStream = response.getPrintStream();
-        responsePrintStream.println(regex);
-        responsePrintStream.close();
-    }
-
     public static void main(String[] args) throws Exception {
         Container container = new FrakServer();
         Server server = new ContainerServer(container);
@@ -80,23 +80,19 @@ public class FrakServer implements Container {
 
         connection.connect(address);
 
-        System.out.println("[INFO] FrakServer listening on port " + port + ", POST some strings!");
+        LOGGER.info("FrakServer listening on port " + port + ", POST some strings!");
     }
 
     private static int determinePort(String[] args) {
-        int port = 8080;
-
         if (args != null && args.length == 1) {
-            String argument = args[0];
-
+            final String argument = args[0];
             try {
-                port = Integer.parseInt(argument);
+                return Integer.parseInt(argument);
             }
             catch (NumberFormatException e) {
-                System.err.println("[ERROR] Could not parse argument '" + argument + "' to an (integer) port number, using default.");
+                LOGGER.warning("Could not parse argument '" + argument + "' to an integer port number, using default.");
             }
         }
-
-        return port;
+        return DEFAULT_PORT;
     }
 }

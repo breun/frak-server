@@ -26,12 +26,14 @@ Running
 Run on default port 8080:
 
     $ java -jar target/frak-server-1.0-SNAPSHOT-jar-with-dependencies.jar
-    [INFO] FrakServer listening on port 8080, POST some strings!
+    (...)
+    INFO: FrakServer listening on port 8080, POST some strings!
 
 Supply a port number as an argument to start the server on an alternative port:
 
     $ java -jar target/frak-server-1.0-SNAPSHOT-jar-with-dependencies.jar 8888
-    [INFO] FrakServer listening on port 8888, POST some strings!
+    (...)
+    INFO: FrakServer listening on port 8888, POST some strings!
     
 Usage
 -----
