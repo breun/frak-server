@@ -1,29 +1,25 @@
 frak-server
 ===========
 
-Regex as a Service. Based on the [frak](https://github.com/noprompt/frak) library and the [Simple](http://www.simpleframework.org/) framework.
+POST some (space-separated) strings to receive a regular expression matching those strings, courtesy of the [frak](https://github.com/noprompt/frak) library.
 
-Requirements
-------------
+Regex as a Service (RaaS).
 
-* Java
-* Maven
+Build Requirements
+------------------
 
-Clone
------
+* [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* [Maven](http://maven.apache.org/)
 
-    $ git clone https://github.com/breun/frak-server.git
-
-Building
+Build
 --------
 
-    $ cd frak-server
     $ mvn package
     
-Running
--------
+Run
+---
 
-Run on default port 8080:
+Execute the assembled jar:
 
     $ java -jar target/frak-server-1.0-SNAPSHOT-jar-with-dependencies.jar
     (...)
@@ -38,7 +34,7 @@ Supply a port number as an argument to start the server on an alternative port:
 Usage
 -----
 
-POST some strings separated by spaces and frak-server will return a regular expression that matches those strings:
+POST some (space-separated) strings to receive a regular expression matching those strings:
 
     $ curl -X POST -d "test one two" localhost:8080
     (?:t(?:est|wo)|one)
