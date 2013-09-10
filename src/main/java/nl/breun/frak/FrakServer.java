@@ -46,7 +46,7 @@ public class FrakServer implements Container {
 
             LOGGER.info("Input: '" + input + "', output: '" + output + "'");
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.severe("Failed to handle request: " + e.getMessage());
         }
     }
 
