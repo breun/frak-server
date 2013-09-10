@@ -1,11 +1,7 @@
 package nl.breun.frak;
 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.util.regex.Pattern;
-
+import clojure.lang.RT;
+import clojure.lang.Symbol;
 import org.simpleframework.http.Method;
 import org.simpleframework.http.Request;
 import org.simpleframework.http.Response;
@@ -15,8 +11,11 @@ import org.simpleframework.transport.Server;
 import org.simpleframework.transport.connect.Connection;
 import org.simpleframework.transport.connect.SocketConnection;
 
-import clojure.lang.RT;
-import clojure.lang.Symbol;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+import java.util.regex.Pattern;
 
 public class FrakServer implements Container {
 
@@ -76,11 +75,28 @@ public class FrakServer implements Container {
         Container container = new FrakServer();
         Server server = new ContainerServer(container);
         Connection connection = new SocketConnection(server);
-        int port = 8080;
+        int port = determinePort(args);
         SocketAddress address = new InetSocketAddress(port);
 
         connection.connect(address);
 
-        System.out.println("FrakServer listening on port " + port + ", POST some strings!");
+        System.out.println("[INFO] FrakServer listening on port " + port + ", POST some strings!");
+    }
+
+    private static int determinePort(String[] args) {
+        int port = 8080;
+
+        if (args != null && args.length == 1) {
+            String argument = args[0];
+
+            try {
+                port = Integer.parseInt(argument);
+            }
+            catch (NumberFormatException e) {
+                System.err.println("[ERROR] Could not parse argument '" + argument + "' to an (integer) port number, using default.");
+            }
+        }
+
+        return port;
     }
 }
