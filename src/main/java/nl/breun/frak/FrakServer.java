@@ -18,13 +18,13 @@ import java.net.SocketAddress;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-public class FrakServer implements Container {
+class FrakServer implements Container {
 
     private final static Logger LOGGER = Logger.getLogger(FrakServer.class.getName());
     private final static String FRAK_NS = "frak";
     private final static int DEFAULT_PORT = 8080;
 
-    public FrakServer() {
+    private FrakServer() {
         initializeFrak();
     }
 
