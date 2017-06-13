@@ -9,12 +9,13 @@ Build Requirements
 ------------------
 
 * [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-* [Maven](http://maven.apache.org/)
 
 Build
 --------
 
-    $ mvn package
+    $ ./mvnw package
+
+You should be able to use `mvnw.cmd` on Windows.
     
 Run
 ---
