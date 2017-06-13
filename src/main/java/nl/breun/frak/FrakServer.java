@@ -6,8 +6,8 @@ import org.simpleframework.http.Method;
 import org.simpleframework.http.Request;
 import org.simpleframework.http.Response;
 import org.simpleframework.http.core.Container;
-import org.simpleframework.http.core.ContainerServer;
-import org.simpleframework.transport.Server;
+import org.simpleframework.http.core.ContainerSocketProcessor;
+import org.simpleframework.transport.SocketProcessor;
 import org.simpleframework.transport.connect.Connection;
 import org.simpleframework.transport.connect.SocketConnection;
 
@@ -73,7 +73,7 @@ class FrakServer implements Container {
 
     public static void main(String[] args) throws Exception {
         Container container = new FrakServer();
-        Server server = new ContainerServer(container);
+        SocketProcessor server = new ContainerSocketProcessor(container);
         Connection connection = new SocketConnection(server);
         int port = determinePort(args);
         SocketAddress address = new InetSocketAddress(port);
