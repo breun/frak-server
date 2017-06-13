@@ -38,4 +38,4 @@ Usage
 POST some (space-separated) strings to receive a regular expression matching those strings:
 
     $ curl -X POST -d "test one two" localhost:8080
-    (?:one|t(?:wo|est))
+    (?:t(?:est|wo)|one)
